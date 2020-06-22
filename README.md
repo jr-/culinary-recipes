@@ -14,9 +14,9 @@ API route call example:
 ${host}/recipes?i=onion,tomato,potato
 
 
-## Installing project using docker
+## Installing project using docker (on Ubuntu 18.04+)
 
-1. sudo apt install docker
+1. Install docker
 
 --- development environment ---
 
@@ -36,7 +36,7 @@ or
 
 ## Running tests
 
-1. sudo apt install node
+1. Install node
 2. yarn install
 3. yarn test
 
