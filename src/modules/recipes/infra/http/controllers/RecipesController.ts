@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 
-import FetchRecipesService from '@modules/recipes/services/FetchRecipesService';
+import { container } from 'tsyringe';
+import FetchRecipesService from '../../../services/FetchRecipesService';
 
 export default class RecipesController {
   public async index(request: Request, response: Response): Promise<Response> {
@@ -8,8 +9,11 @@ export default class RecipesController {
 
     const ingredientsFilter = ingredients.split(',');
 
-    const fetchRecipesService = new FetchRecipesService();
-    const recipesResponse = await fetchRecipesService.execute(ingredientsFilter);
+    const fetchRecipesService = container.resolve(FetchRecipesService);
+
+    const recipesResponse = await fetchRecipesService.execute(
+      ingredientsFilter,
+    );
 
     return response.json(recipesResponse);
   }
