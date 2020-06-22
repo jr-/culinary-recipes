@@ -4,6 +4,8 @@ import axios from 'axios';
 import AppError from '@shared/errors/AppError';
 import Recipe from '@modules/recipes/entities/Recipe';
 
+import apiKeys from '@config/apiKeys';
+
 interface RecipePuppyRecipe {
   title: string;
   href: string;
@@ -12,6 +14,7 @@ interface RecipePuppyRecipe {
 }
 
 const recipePuppyUrl = 'http://www.recipepuppy.com/api/';
+const giphyUrl = 'https://api.giphy.com/v1/gifs/';
 export default class RecipesController {
   public async index(request: Request, response: Response): Promise<Response> {
     const ingredients: string = request.query.i as string;
@@ -40,6 +43,27 @@ export default class RecipesController {
       throw new AppError('RecipePuppy API unavailable', 500);
     }
 
-    return response.json(recipes);
+    try {
+      const promises = recipes.map(async recipe => {
+        const giphyResponse = await axios.get(
+          `${giphyUrl}search?api_key=${apiKeys.giphyApiKey}&q=${recipe.title}&limit=1&offset=0&rating=G&lang=en`,
+        );
+  
+        let gif;
+        if (giphyResponse.data.data.length > 0) {
+          gif = giphyResponse.data.data[0].url;
+        }
+        recipe.gif = gif;
+      });
+
+      await Promise.all(promises);
+    } catch (err) {
+      throw new AppError('Giphy API unavailable');
+    }
+
+    return response.json({
+      keywords: ingredientsFilter,
+      recipes
+    });
   }
 }
