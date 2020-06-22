@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 
 import axios from 'axios';
+import AxiosHandler from '@shared/handlers/AxiosHandler';
 import AppError from '@shared/errors/AppError';
 import Recipe from '@modules/recipes/entities/Recipe';
 
@@ -40,6 +41,8 @@ export default class RecipesController {
         return new Recipe(title, recipeIngredients, r.href);
       });
     } catch (err) {
+      const axiosHandler = new AxiosHandler();
+      axiosHandler.exception(err);
       throw new AppError('RecipePuppy API unavailable', 500);
     }
 
@@ -58,6 +61,8 @@ export default class RecipesController {
 
       await Promise.all(promises);
     } catch (err) {
+      const axiosHandler = new AxiosHandler();
+      axiosHandler.exception(err);
       throw new AppError('Giphy API unavailable');
     }
 
