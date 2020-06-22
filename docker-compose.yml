@@ -1,0 +1,8 @@
+version: "3.4"
+services:
+  culinary-recipes-dev:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    ports:
+      - 3333:3333
