@@ -14,12 +14,14 @@ API route call example:
 ${host}/recipes?i=onion,tomato,potato
 
 
-## installing project using docker
+## Installing project using docker
 
 1. sudo apt install docker
 
 --- development environment ---
+
 2. docker build -f Dockerfile.dev -t culinary-recipes-dev .
+
 3. docker run --name culinary-recipes-dev -p 3333:3333 culinary-recipes-dev
 
 or
@@ -27,16 +29,18 @@ or
 2a. docker-compose up -d culinary-recipes-dev
 
 --- production environment ---
+
 2. docker build -f Dockerfile.prod -t culinary-recipes-prod .
+
 3. docker run -d --name culinary-recipes-prod -p 3333:3333 culinary-recipes-prod
 
-## running tests
+## Running tests
 
 1. sudo apt install node
 2. yarn install
 3. yarn test
 
-## things i could improve
+## Things i could improve
 
 - Check unit tests before running production docker container
 - Input data validation ie. Yup
